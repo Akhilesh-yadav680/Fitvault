@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#00c8ff;--blue2:#0055ff;--navy:#000814;--glass:rgba(255,255,255,0.042);--gb:rgba(0,200,255,0.17);--muted:#5a6a7a;--text:#cdd8e3}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(160deg,#000814 0%,#00040f 55%,#000814 100%);font-family:'Syne',sans-serif;color:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:#000}::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px}
+
+@keyframes floatY{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-16px) rotate(3deg)}}
+@keyframes shimmerT{0%{background-position:0% center}100%{background-position:220% center}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(0,200,255,.45)}70%{box-shadow:0 0 0 18px rgba(0,200,255,0)}100%{box-shadow:0 0 0 0 rgba(0,200,255,0)}}
+@keyframes barFill{from{width:0}to{width:var(--w)}}
+@keyframes blinkDot{0%,100%{opacity:1}50%{opacity:.2}}
+
+.nav-glass{background:rgba(0,8,20,.88)!important;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-bottom:1px solid rgba(0,200,255,.08)}
+.hero-head{font-family:'Bebas Neue',cursive;background:linear-gradient(120deg,#fff 0%,#00c8ff 38%,#fff 58%,#0055ff 100%);background-size:220% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmerT 4.5s linear infinite}
+.glass{background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--gb);transition:all .38s cubic-bezier(.23,1,.32,1)}
+.glass:hover{background:rgba(0,200,255,.072);border-color:rgba(0,200,255,.5);transform:translateY(-9px) scale(1.012);box-shadow:0 28px 72px rgba(0,200,255,.15),0 0 50px rgba(0,85,255,.07),inset 0 1px 0 rgba(255,255,255,.07)}
+.btn{background:linear-gradient(135deg,#00c8ff,#0055ff);border:none;color:#fff;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;position:relative;overflow:hidden;transition:all .32s ease}
+.btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transition:left .48s}
+.btn:hover::before{left:100%}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,200,255,.42),0 0 70px rgba(0,85,255,.18)}
+.btn-ghost{background:transparent;border:1px solid rgba(0,200,255,.35);color:var(--blue);font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:all .28s}
+.btn-ghost:hover{background:rgba(0,200,255,.09);border-color:var(--blue);box-shadow:0 0 28px rgba(0,200,255,.14)}
+.appear{opacity:0;transform:translateY(44px);transition:opacity .85s cubic-bezier(.23,1,.32,1),transform .85s cubic-bezier(.23,1,.32,1)}
+.appear.in{opacity:1;transform:translateY(0)}
+.grid-bg{background-image:linear-gradient(rgba(0,200,255,.024) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,.024) 1px,transparent 1px);background-size:62px 62px}
+.tag{font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 12px;border-radius:9999px;border:1px solid rgba(0,200,255,.3);background:rgba(0,200,255,.1);color:var(--blue)}
+.tag.gold{border-color:rgba(255,215,0,.35);background:rgba(255,215,0,.1);color:#ffd700}
+.pbar-track{height:5px;border-radius:9999px;background:rgba(255,255,255,.06);overflow:hidden}
+.pbar-fill{height:100%;background:linear-gradient(90deg,#00c8ff,#0055ff);border-radius:9999px}
+.neon{color:var(--blue);text-shadow:0 0 12px rgba(0,200,255,.58),0 0 36px rgba(0,200,255,.22)}
+.float{animation:floatY 5s ease-in-out infinite}
+.eq-card{border-radius:13px;padding:18px 12px;text-align:center;cursor:pointer;transition:all .3s;background:var(--glass);border:1px solid rgba(0,200,255,.1)}
+.eq-card:hover{background:rgba(0,200,255,.07);border-color:rgba(0,200,255,.42);transform:translateY(-6px);box-shadow:0 14px 38px rgba(0,200,255,.1)}
+.split-day{border-radius:10px;padding:13px;background:rgba(0,200,255,.04);border:1px solid rgba(0,200,255,.1);margin-bottom:9px;transition:border-color .25s}
+.split-day:hover{border-color:rgba(0,200,255,.35)}
+.c-link{display:block;text-decoration:none;border-radius:15px;padding:26px 18px;text-align:center;transition:all .38s;background:var(--glass);border:1px solid rgba(0,200,255,.12)}
+.c-link:hover{transform:translateY(-8px);box-shadow:0 18px 48px rgba(0,0,0,.3)}
+.flink{color:var(--muted);font-size:13px;text-decoration:none;display:block;margin-bottom:9px;transition:color .2s}
+.flink:hover{color:var(--blue)}
+.calc-tog{flex:1;padding:10px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#8899aa;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:all .22s;text-transform:capitalize}
+.calc-tog.on{background:rgba(0,200,255,.18);border-color:var(--blue);color:var(--blue)}
+.day-btn{padding:13px 0;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#8899aa;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:all .22s;width:100%}
+.day-btn.on{background:rgba(0,200,255,.18);border-color:var(--blue);color:var(--blue);box-shadow:0 0 18px rgba(0,200,255,.14)}
+.res-box{border-radius:13px;background:rgba(0,200,255,.06);border:1px solid rgba(0,200,255,.18);padding:18px;text-align:center;animation:fadeUp .45s ease}
+.nav-a{text-decoration:none;color:#8899aa;font-size:13px;font-weight:600;transition:color .2s}
+.nav-a:hover{color:var(--blue)}
+select,input[type=range]{accent-color:var(--blue)}
+select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;padding:9px 13px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;width:100%}
+select option{background:#001428;color:#fff}
+.orb{position:absolute;border-radius:50%;pointer-events:none}
+.quote-block{border-left:2px solid var(--blue);padding-left:22px}
+@media(max-width:640px){.hide-mob{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav" style="position:fixed;top:0;left:0;right:0;z-index:200;padding:14px 28px;display:flex;justify-content:space-between;align-items:center;transition:background .4s">
+  <div style="font-family:'Bebas Neue',cursive;font-size:28px;letter-spacing:6px;color:#00c8ff">FIT<span style="color:#fff">VAULT</span></div>
+  <div class="hide-mob" style="display:flex;gap:32px">
+    <a href="#products" class="nav-a">Products</a>
+    <a href="#calculators" class="nav-a">Calculators</a>
+    <a href="#science" class="nav-a">Science</a>
+    <a href="#contact" class="nav-a">Contact</a>
+  </div>
+  <button class="btn" onclick="buyWA('Full Bundle Pack',149)" style="padding:10px 24px;border-radius:9999px;font-size:13px">Buy Now →</button>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="grid-bg" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:100px 22px 60px">
+  <div class="orb" style="width:700px;height:700px;top:10%;left:-18%;background:radial-gradient(circle,rgba(0,200,255,.055) 0%,transparent 70%)"></div>
+  <div class="orb" style="width:500px;height:500px;bottom:5%;right:-14%;background:radial-gradient(circle,rgba(0,85,255,.07) 0%,transparent 70%)"></div>
+  <div class="orb" style="width:280px;height:280px;top:52%;left:52%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(0,200,255,.04) 0%,transparent 70%)"></div>
+
+  <!-- hex deco -->
+  <svg style="position:absolute;left:9%;top:18%;opacity:.13;pointer-events:none" width="80" height="80"><polygon points="40,2 75,21 75,59 40,78 5,59 5,21" fill="none" stroke="#00c8ff" stroke-width=".9"/></svg>
+  <svg style="position:absolute;right:7%;top:10%;opacity:.1;pointer-events:none" width="60" height="60"><polygon points="30,2 56,16 56,44 30,58 4,44 4,16" fill="none" stroke="#00c8ff" stroke-width=".9"/></svg>
+  <svg style="position:absolute;right:6%;bottom:18%;opacity:.07;pointer-events:none" width="110" height="110"><polygon points="55,2 104,28 104,82 55,108 6,82 6,28" fill="none" stroke="#00c8ff" stroke-width=".9"/></svg>
+
+  <div style="text-align:center;max-width:940px;position:relative;z-index:10">
+    <div class="appear" style="display:inline-flex;align-items:center;gap:10px;padding:7px 20px;border-radius:9999px;border:1px solid rgba(0,200,255,.3);margin-bottom:34px">
+      <span style="width:7px;height:7px;border-radius:50%;background:#00c8ff;display:inline-block;animation:pulseRing 2.2s infinite"></span>
+      <span style="font-size:10px;letter-spacing:3px;color:#00c8ff;font-weight:700">PREMIUM FITNESS GUIDES • ONLY ₹49</span>
+    </div>
+
+    <h1 class="appear hero-head" style="font-size:clamp(62px,12vw,145px);line-height:.92;letter-spacing:-1px;margin-bottom:26px">
+      UNLOCK<br>YOUR BEST<br>BODY
+    </h1>
+
+    <p class="appear" style="font-size:clamp(14px,2vw,18px);color:#6a7f90;max-width:540px;margin:0 auto 42px;line-height:1.78">
+      Science-backed PDF guides crafted for Indian gym beginners.
+      Go from zero to <span style="color:#00c8ff;font-weight:700">aesthetic</span> with proven, affordable strategies.
+    </p>
+
+    <div class="appear" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="#products" class="btn" style="padding:15px 42px;border-radius:9999px;font-size:15px;text-decoration:none;color:#fff;display:inline-block">Explore Guides ↓</a>
+      <button class="btn-ghost" onclick="window.open('https://wa.me/9652113907','_blank')"  style="padding:15px 42px;border-radius:9999px;font-size:15px">💬 WhatsApp Us</button>
+    </div>
+
+    <div class="appear" style="display:flex;justify-content:center;gap:clamp(22px,5vw,72px);margin-top:66px;flex-wrap:wrap">
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',cursive;font-size:46px;color:#00c8ff;letter-spacing:2px">500+</div><div style="font-size:10px;color:#334455;letter-spacing:2px;text-transform:uppercase;margin-top:4px">Happy Customers</div></div>
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',cursive;font-size:46px;color:#00c8ff;letter-spacing:2px">6</div><div style="font-size:10px;color:#334455;letter-spacing:2px;text-transform:uppercase;margin-top:4px">Expert Guides</div></div>
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',cursive;font-size:46px;color:#00c8ff;letter-spacing:2px">₹49</div><div style="font-size:10px;color:#334455;letter-spacing:2px;text-transform:uppercase;margin-top:4px">Per Guide</div></div>
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',cursive;font-size:46px;color:#00c8ff;letter-spacing:2px">100%</div><div style="font-size:10px;color:#334455;letter-spacing:2px;text-transform:uppercase;margin-top:4px">Science-Based</div></div>
+    </div>
+
+    <div class="appear float" style="margin-top:52px;display:flex;justify-content:center">
+      <svg width="190" height="80" viewBox="0 0 240 100" fill="none" opacity=".68">
+        <rect x="2" y="24" width="40" height="52" rx="6" fill="#00c8ff" fill-opacity=".9"/>
+        <rect x="42" y="34" width="18" height="32" rx="3" fill="#00c8ff" fill-opacity=".62"/>
+        <rect x="60" y="44" width="120" height="12" rx="6" fill="#00c8ff" fill-opacity=".33"/>
+        <rect x="180" y="34" width="18" height="32" rx="3" fill="#00c8ff" fill-opacity=".62"/>
+        <rect x="198" y="24" width="40" height="52" rx="6" fill="#00c8ff" fill-opacity=".9"/>
+        <ellipse cx="120" cy="50" rx="9" ry="3.5" fill="#00c8ff" fill-opacity=".45"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" style="padding:110px 22px">
+<div style="max-width:1220px;margin:0 auto">
+  <div class="appear" style="text-align:center;margin-bottom:68px">
+    <div style="color:#00c8ff;font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:13px;font-weight:700">THE VAULT</div>
+    <h2 style="font-family:'Bebas Neue',cursive;font-size:clamp(38px,6vw,72px);letter-spacing:2px;line-height:1">PREMIUM<br>FITNESS GUIDES</h2>
+    <p style="color:#5a6a7a;font-size:16px;max-width:480px;margin:16px auto 0;line-height:1.75">Each guide is built on evidence-based principles and real-world gym experience.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:20px" id="product-grid"></div>
+</div>
+</section>
+
+<!-- MOTIVATION -->
+<section style="padding:110px 22px;background:rgba(0,200,255,.012);border-top:1px solid rgba(0,200,255,.06);border-bottom:1px solid rgba(0,200,255,.06)">
+<div style="max-width:1080px;margin:0 auto">
+  <div class="appear" style="text-align:center;margin-bottom:58px">
+    <div style="color:#00c8ff;font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:13px;font-weight:700">FUEL YOUR MIND</div>
+    <h2 style="font-family:'Bebas Neue',cursive;font-size:clamp(36px,6vw,68px);letter-spacing:2px;line-height:1">WORDS THAT HIT<br>DIFFERENT</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:20px">
+    <div class="appear glass quote-block" style="border-radius:18px;padding:34px;animation-delay:.05s">
+      <div style="font-family:Georgia,serif;font-size:52px;color:#00c8ff;opacity:.22;line-height:1;margin-bottom:6px">"</div>
+      <p style="font-size:17px;line-height:1.72;font-style:italic;color:#c4cfda;margin-bottom:16px">The only bad workout is the one that didn't happen.</p>
+      <p style="color:#00c8ff;font-size:11px;font-weight:700;letter-spacing:1px">— Unknown</p>
+    </div>
+    <div class="appear glass quote-block" style="border-radius:18px;padding:34px;animation-delay:.12s">
+      <div style="font-family:Georgia,serif;font-size:52px;color:#00c8ff;opacity:.22;line-height:1;margin-bottom:6px">"</div>
+      <p style="font-size:17px;line-height:1.72;font-style:italic;color:#c4cfda;margin-bottom:16px">Your body can stand almost anything. It's your mind you have to convince.</p>
+      <p style="color:#00c8ff;font-size:11px;font-weight:700;letter-spacing:1px">— Unknown</p>
+    </div>
+    <div class="appear glass quote-block" style="border-radius:18px;padding:34px;animation-delay:.19s">
+      <div style="font-family:Georgia,serif;font-size:52px;color:#00c8ff;opacity:.22;line-height:1;margin-bottom:6px">"</div>
+      <p style="font-size:17px;line-height:1.72;font-style:italic;color:#c4cfda;margin-bottom:16px">Strength comes from overcoming what you thought you couldn't.</p>
+      <p style="color:#00c8ff;font-size:11px;font-weight:700;letter-spacing:1px">— Rikki Rogers</p>
+    </div>
+    <div class="appear glass quote-block" style="border-radius:18px;padding:34px;animation-delay:.26s">
+      <div style="font-family:Georgia,serif;font-size:52px;color:#00c8ff;opacity:.22;line-height:1;margin-bottom:6px">"</div>
+      <p style="font-size:17px;line-height:1.72;font-style:italic;color:#c4cfda;margin-bottom:16px">Train insane or remain the same.</p>
+      <p style="color:#00c8ff;font-size:11px;font-weight:700;letter-spacing:1px">— Jillian Michaels</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SCIENCE -->
+<section id="science" style="padding:110px 22px">
+<div style="max-width:1220px;margin:0 auto">
+  <div class="appear" style="text-align:center;margin-bottom:68px">
+    <div style="color:#00c8ff;font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:13px;font-weight:700">EVIDENCE-BASED</div>
+    <h2 style="font-family:'Bebas Neue',cursive;font-size:clamp(36px,6vw,68px);letter-spacing:2px;line-height:1">BUILT ON<br>REAL SCIENCE</h2>
+    <p style="color:#5a6a7a;font-size:16px;max-width:520px;margin:16px auto 0;line-height:1.75">Our guides draw from peer-reviewed research and the world's leading fitness educators.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:44px" id="science-grid"></div>
+
+  <div class="appear glass" style="border-radius:20px;padding:44px 36px;text-align:center">
+    <p style="color:#5a6a7a;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:22px">Inspired by knowledge from</p>
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px">
+      <span style="padding:7px 17px;border-radius:9999px;border:1px solid rgba(0,200,255,.18);font-size:13px;color:#8899aa;font-weight:600">Jeff Nippard</span>
+      <span style="padding:7px 17px;border-radius:9999px;border:1px solid rgba(0,200,255,.18);font-size:13px;color:#8899aa;font-weight:600">Dr. Mike Israetel</span>
+      <span style="padding:7px 17px;border-radius:9999px;border:1px solid rgba(0,200,255,.18);font-size:13px;color:#8899aa;font-weight:600">AthleanX</span>
+      <span style="padding:7px 17px;border-radius:9999px;border:1px solid rgba(0,200,255,.18);font-size:13px;color:#8899aa;font-weight:600">Alan Thrall</span>
+      <span style="padding:7px 17px;border-radius:9999px;border:1px solid rgba(0,200,255,.18);font-size:13px;color:#8899aa;font-weight:600">Renaissance Periodization</span>
+      <span style="padding:7px 17px;border-radius:9999px;border:1px solid rgba(0,200,255,.18);font-size:13px;color:#8899aa;font-weight:600">Huberman Lab</span>
+      <span style="padding:7px 17px;border-radius:9999px;border:1px solid rgba(0,200,255,.18);font-size:13px;color:#8899aa;font-weight:600">Greg Doucette</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CALCULATORS -->
+<section id="calculators" style="padding:110px 22px;background:rgba(0,40,120,.025)">
+<div style="max-width:1220px;margin:0 auto">
+  <div class="appear" style="text-align:center;margin-bottom:68px">
+    <div style="color:#00c8ff;font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:13px;font-weight:700">FREE TOOLS</div>
+    <h2 style="font-family:'Bebas Neue',cursive;font-size:clamp(36px,6vw,68px);letter-spacing:2px;line-height:1">KNOW YOUR<br>NUMBERS</h2>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-bottom:36px">
+
+    <!-- BMI -->
+    <div class="appear glass" style="border-radius:22px;padding:34px">
+      <div style="display:flex;align-items:center;gap:13px;margin-bottom:26px"><span style="font-size:34px">⚖️</span><h3 style="font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:1px">BMI Calculator</h3></div>
+      <div style="margin-bottom:18px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="font-size:12px;color:#8899aa">Height (cm)</span><span id="bh-val" style="font-size:12px;color:#00c8ff;font-weight:700">175</span></div>
+        <input type="range" min="140" max="220" value="175" id="bh" style="width:100%" oninput="document.getElementById('bh-val').textContent=this.value">
+      </div>
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="font-size:12px;color:#8899aa">Weight (kg)</span><span id="bw-val" style="font-size:12px;color:#00c8ff;font-weight:700">70</span></div>
+        <input type="range" min="30" max="150" value="70" id="bw" style="width:100%" oninput="document.getElementById('bw-val').textContent=this.value">
+      </div>
+      <button class="btn" onclick="calcBMI()" style="width:100%;padding:13px;border-radius:13px;font-size:14px;margin-bottom:16px">Calculate BMI</button>
+      <div id="bmi-result" style="display:none" class="res-box">
+        <div id="bmi-num" style="font-family:'Bebas Neue',cursive;font-size:62px;color:#00c8ff"></div>
+        <div id="bmi-cat" style="font-size:15px;font-weight:700;margin-top:4px"></div>
+        <div style="font-size:11px;color:#5a6a7a;margin-top:7px">Body Mass Index</div>
+      </div>
+    </div>
+
+    <!-- CALORIES -->
+    <div class="appear glass" style="border-radius:22px;padding:34px">
+      <div style="display:flex;align-items:center;gap:13px;margin-bottom:26px"><span style="font-size:34px">🔥</span><h3 style="font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:1px">Calorie Calculator</h3></div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:12px;color:#8899aa;margin-bottom:8px">Gender</div>
+        <div style="display:flex;gap:9px">
+          <button class="calc-tog on" id="tog-m" onclick="setGender('male')" >Male</button>
+          <button class="calc-tog" id="tog-f" onclick="setGender('female')">Female</button>
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:#8899aa">Age</span><span id="ca-val" style="font-size:11px;color:#00c8ff;font-weight:700">24</span></div>
+        <input type="range" min="15" max="65" value="24" id="ca" style="width:100%" oninput="document.getElementById('ca-val').textContent=this.value">
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:#8899aa">Height (cm)</span><span id="ch-val" style="font-size:11px;color:#00c8ff;font-weight:700">175</span></div>
+        <input type="range" min="140" max="220" value="175" id="ch" style="width:100%" oninput="document.getElementById('ch-val').textContent=this.value">
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:#8899aa">Weight (kg)</span><span id="cw-val" style="font-size:11px;color:#00c8ff;font-weight:700">70</span></div>
+        <input type="range" min="30" max="150" value="70" id="cw" style="width:100%" oninput="document.getElementById('cw-val').textContent=this.value">
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;color:#8899aa;margin-bottom:7px">Activity Level</div>
+        <select id="act">
+          <option value="1.2">Sedentary (no exercise)</option>
+          <option value="1.375">Light (1–3 days/week)</option>
+          <option value="1.55" selected>Moderate (3–5 days/week)</option>
+          <option value="1.725">Active (6–7 days/week)</option>
+          <option value="1.9">Very Active (2× per day)</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calcCal()" style="width:100%;padding:13px;border-radius:13px;font-size:14px;margin-bottom:14px">Calculate Calories</button>
+      <div id="cal-result" style="display:none" class="res-box">
+        <div id="cal-num" style="font-family:'Bebas Neue',cursive;font-size:52px;color:#00c8ff"></div>
+        <div style="font-size:11px;color:#8899aa;margin-bottom:12px">Maintenance Calories / day</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+          <div style="text-align:center;padding:9px;border-radius:9px;background:rgba(255,255,255,.04)">
+            <div id="cut-num" style="font-size:18px;font-weight:700;color:#60a5fa"></div>
+            <div style="font-size:10px;color:#5a6a7a;margin-top:2px">🔵 Cutting</div>
+          </div>
+          <div style="text-align:center;padding:9px;border-radius:9px;background:rgba(255,255,255,.04)">
+            <div id="bulk-num" style="font-size:18px;font-weight:700;color:#34d399"></div>
+            <div style="font-size:10px;color:#5a6a7a;margin-top:2px">🟢 Bulking</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPLIT -->
+    <div class="appear glass" style="border-radius:22px;padding:34px">
+      <div style="display:flex;align-items:center;gap:13px;margin-bottom:26px"><span style="font-size:34px">🏋️</span><h3 style="font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:1px">Split Generator</h3></div>
+      <div style="margin-bottom:22px">
+        <div style="font-size:12px;color:#8899aa;margin-bottom:11px">Gym days per week</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">
+          <button class="day-btn" id="d2" onclick="setDay(2)">2</button>
+          <button class="day-btn" id="d3" onclick="setDay(3)">3</button>
+          <button class="day-btn on" id="d4" onclick="setDay(4)">4</button>
+          <button class="day-btn" id="d5" onclick="setDay(5)">5</button>
+          <button class="day-btn" id="d6" onclick="setDay(6)">6</button>
+        </div>
+      </div>
+      <button class="btn" onclick="genSplit()" style="width:100%;padding:13px;border-radius:13px;font-size:14px;margin-bottom:18px">Generate Split</button>
+      <div id="split-result"></div>
+    </div>
+  </div>
+
+  <!-- Equipment -->
+  <div class="appear" style="margin-top:10px">
+    <h3 style="font-family:'Bebas Neue',cursive;font-size:28px;text-align:center;margin-bottom:24px;letter-spacing:2px">GYM EQUIPMENT ESSENTIALS</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px">
+      <div class="eq-card"><div style="font-size:30px;margin-bottom:8px">🏋️</div><div style="font-weight:700;font-size:12px;margin-bottom:4px">Barbell</div><div style="font-size:10px;color:#5a6a7a">Primary compound lifts</div></div>
+      <div class="eq-card"><div style="font-size:30px;margin-bottom:8px">💪</div><div style="font-weight:700;font-size:12px;margin-bottom:4px">Dumbbells</div><div style="font-size:10px;color:#5a6a7a">Isolation & unilateral</div></div>
+      <div class="eq-card"><div style="font-size:30px;margin-bottom:8px">🔩</div><div style="font-weight:700;font-size:12px;margin-bottom:4px">Cable Machine</div><div style="font-size:10px;color:#5a6a7a">Constant tension</div></div>
+      <div class="eq-card"><div style="font-size:30px;margin-bottom:8px">🪑</div><div style="font-weight:700;font-size:12px;margin-bottom:4px">Bench</div><div style="font-size:10px;color:#5a6a7a">Press variations</div></div>
+      <div class="eq-card"><div style="font-size:30px;margin-bottom:8px">🏃</div><div style="font-weight:700;font-size:12px;margin-bottom:4px">Treadmill</div><div style="font-size:10px;color:#5a6a7a">Cardio conditioning</div></div>
+      <div class="eq-card"><div style="font-size:30px;margin-bottom:8px">⚙️</div><div style="font-weight:700;font-size:12px;margin-bottom:4px">Smith Machine</div><div style="font-size:10px;color:#5a6a7a">Beginner-friendly</div></div>
+      <div class="eq-card"><div style="font-size:30px;margin-bottom:8px">🎯</div><div style="font-weight:700;font-size:12px;margin-bottom:4px">Bands</div><div style="font-size:10px;color:#5a6a7a">Activation & warm-up</div></div>
+      <div class="eq-card"><div style="font-size:30px;margin-bottom:8px">⚖️</div><div style="font-weight:700;font-size:12px;margin-bottom:4px">Weight Plates</div><div style="font-size:10px;color:#5a6a7a">Progressive overload</div></div>
+    </div>
+  </div>
+
+  <!-- Floating dumbbells deco -->
+  <div style="display:flex;justify-content:center;gap:44px;margin-top:56px;flex-wrap:wrap">
+    <div class="float" style="animation-delay:0s;animation-duration:5s">
+      <svg width="100" height="42" viewBox="0 0 240 100" fill="none" opacity=".55"><rect x="2" y="24" width="40" height="52" rx="6" fill="#00c8ff" fill-opacity=".9"/><rect x="42" y="34" width="18" height="32" rx="3" fill="#00c8ff" fill-opacity=".6"/><rect x="60" y="44" width="120" height="12" rx="6" fill="#00c8ff" fill-opacity=".32"/><rect x="180" y="34" width="18" height="32" rx="3" fill="#00c8ff" fill-opacity=".6"/><rect x="198" y="24" width="40" height="52" rx="6" fill="#00c8ff" fill-opacity=".9"/></svg>
+    </div>
+    <div class="float" style="animation-delay:1.8s;animation-duration:6.5s">
+      <svg width="70" height="30" viewBox="0 0 240 100" fill="none" opacity=".35"><rect x="2" y="24" width="40" height="52" rx="6" fill="#00c8ff" fill-opacity=".9"/><rect x="42" y="34" width="18" height="32" rx="3" fill="#00c8ff" fill-opacity=".6"/><rect x="60" y="44" width="120" height="12" rx="6" fill="#00c8ff" fill-opacity=".32"/><rect x="180" y="34" width="18" height="32" rx="3" fill="#00c8ff" fill-opacity=".6"/><rect x="198" y="24" width="40" height="52" rx="6" fill="#00c8ff" fill-opacity=".9"/></svg>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="padding:110px 22px;border-top:1px solid rgba(0,200,255,.07)">
+<div style="max-width:880px;margin:0 auto;text-align:center">
+  <div class="appear">
+    <div style="color:#00c8ff;font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:13px;font-weight:700">GET IN TOUCH</div>
+    <h2 style="font-family:'Bebas Neue',cursive;font-size:clamp(38px,7vw,76px);letter-spacing:2px;line-height:1">READY TO<br>TRANSFORM?</h2>
+    <p style="color:#5a6a7a;font-size:17px;margin:18px auto 56px;max-width:480px;line-height:1.75">Order via WhatsApp in seconds or reach us on social media. We reply fast.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:48px">
+      <a href="https://wa.me/9652113907" target="_blank" class="c-link">
+        <div style="font-size:38px;margin-bottom:12px">💬</div>
+        <div style="font-size:10px;color:#5a6a7a;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase">WhatsApp</div>
+        <div style="font-size:14px;font-weight:700;color:#25D366">Order Here</div>
+      </a>
+      <a href="mailto:akhileshyadav52364@gmail.com" class="c-link">
+        <div style="font-size:38px;margin-bottom:12px">📧</div>
+        <div style="font-size:10px;color:#5a6a7a;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase">Email</div>
+        <div style="font-size:14px;font-weight:700;color:#00c8ff">Gmail</div>
+      </a>
+      <a href="https://in.pinterest.com/zenpeakai/" target="_blank" class="c-link">
+        <div style="font-size:38px;margin-bottom:12px">📌</div>
+        <div style="font-size:10px;color:#5a6a7a;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase">Pinterest</div>
+        <div style="font-size:14px;font-weight:700;color:#E60023">@Zenpeakai</div>
+      </a>
+    </div>
+
+    <button class="btn" onclick="window.open('https://wa.me/9652113907?text=Hi%20FitVault!%20%F0%9F%91%8B%20I%20want%20to%20know%20more%20about%20your%20guides.','_blank')" style="padding:18px 52px;border-radius:9999px;font-size:17px;cursor:pointer">
+      💬 Chat on WhatsApp Now
+    </button>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer style="border-top:1px solid rgba(0,200,255,.08);padding:60px 28px 34px;background:rgba(0,0,0,.52)">
+<div style="max-width:1200px;margin:0 auto">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:48px;margin-bottom:52px">
+    <div>
+      <div style="font-family:'Bebas Neue',cursive;font-size:36px;letter-spacing:6px;color:#00c8ff;margin-bottom:16px">FIT<span style="color:#fff">VAULT</span></div>
+      <p style="color:#445566;font-size:13px;line-height:1.8;max-width:240px">Premium fitness PDF guides for Indian beginners. Science-backed, affordable, life-changing.</p>
+      <div style="display:flex;gap:12px;margin-top:22px">
+        <a href="https://in.pinterest.com/zenpeakai/" target="_blank" style="width:34px;height:34px;border-radius:9px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.18);display:flex;align-items:center;justify-content:center;font-size:16px;text-decoration:none">📌</a>
+        <a href="https://wa.me/9652113907" target="_blank" style="width:34px;height:34px;border-radius:9px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.18);display:flex;align-items:center;justify-content:center;font-size:16px;text-decoration:none">💬</a>
+      </div>
+    </div>
+    <div>
+      <h4 style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#8899aa;margin-bottom:20px;font-weight:700">Guides</h4>
+      <a class="flink" href="#products">→ Beginner Muscle Gain Guide</a>
+      <a class="flink" href="#products">→ Single Muscle Split</a>
+      <a class="flink" href="#products">→ Push Pull Leg Split</a>
+      <a class="flink" href="#products">→ Creatine & Supplements Guide</a>
+      <a class="flink" href="#products">→ 4 Days Split Guide</a>
+      <a class="flink" href="#products">→ Full Bundle Pack</a>
+    </div>
+    <div>
+      <h4 style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#8899aa;margin-bottom:20px;font-weight:700">Tools</h4>
+      <a class="flink" href="#calculators">→ BMI Calculator</a>
+      <a class="flink" href="#calculators">→ Calorie Calculator</a>
+      <a class="flink" href="#calculators">→ Workout Split Generator</a>
+      <a class="flink" href="#calculators">→ Equipment Guide</a>
+    </div>
+    <div>
+      <h4 style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#8899aa;margin-bottom:20px;font-weight:700">Connect</h4>
+      <a class="flink" href="https://wa.me/919999999999" target="_blank">→ WhatsApp</a>
+      <a class="flink" href="https://pinterest.com/fitvault_in" target="_blank">→ Pinterest</a>
+      <a class="flink" href="mailto:fitvault@gmail.com">→ Email Us</a>
+    </div>
+  </div>
+  <div style="border-top:1px solid rgba(255,255,255,.05);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+    <div style="color:#334455;font-size:12px">© 2025 FitVault. All rights reserved. Made with 💪 for 🇮🇳 Indian gym beginners.</div>
+    <div style="display:flex;gap:22px">
+      <span style="color:#334455;font-size:11px;cursor:pointer">Privacy Policy</span>
+      <span style="color:#334455;font-size:11px;cursor:pointer">Terms of Service</span>
+      <span style="color:#334455;font-size:11px;cursor:pointer">Refund Policy</span>
+    </div>
+  </div>
+</div>
+</footer>
+
+<script>
+const WA = "9652113907";
+
+function buyWA(name, price) {
+  const msg = encodeURIComponent("Hi FitVault! 🔥 I want to buy the *" + name + "* for ₹" + price + ". Please share payment details.");
+  window.open("https://wa.me/" + WA + "?text=" + msg, "_blank");
+}
+
+// ── Products data ──
+const products = 
+[
+  {
+    id:1,
+    emoji:"💪",
+    name:"Beginner Workout Plan",
+    tag:"BEGINNER ESSENTIAL",
+    desc:"A complete beginner-friendly muscle building system designed to help skinny beginners build strength, confidence and lean muscle with structured progressive overload training.",
+    price:49,
+    features:[
+      "12-Week Program",
+      "Video Explanations",
+      "Nutrition Basics",
+      "Progress Tracker"
+    ],
+    gold:false
+  },
+
+  {
+    id:2,
+    emoji:"🍗",
+    name:"Push Pull Leg",
+    tag:"HYPERTROPHY FOCUSED",
+    desc:"A science-based Push Pull Legs split optimized for maximum hypertrophy, recovery and consistent strength progression using modern bodybuilding principles.",
+    price:49,
+    features:[
+      "PPL Training Split",
+      "Recovery Structure",
+      "Exercise Breakdown",
+      "Volume Optimization"
+    ],
+    gold:false
+  },
+
+  {
+    id:3,
+    emoji:"🏠",
+    name:"Home Workout Program",
+    tag:"TRAIN ANYWHERE",
+    desc:"An effective bodyweight-focused home workout system engineered for beginners who want to build muscle, burn fat and stay consistent without a gym.",
+    price:49,
+    features:[
+      "No Equipment Needed",
+      "8-Week Structure",
+      "Daily Routines",
+      "Bodyweight Progressions"
+    ],
+    gold:false
+  },
+
+  {
+    id:4,
+    emoji:"⚗️",
+    name:"Creatine & Supplements Guide",
+    tag:"SCIENCE-BASED",
+    desc:"A beginner-friendly evidence-based supplement guide explaining what supplements actually work, how to use them properly and which products are worth buying.",
+    price:49,
+    features:[
+      "Supplement Basics",
+      "Creatine Guide",
+      "Dosage Protocols",
+      "Buying Recommendations"
+    ],
+    gold:false
+  },
+
+  {
+    id:5,
+    emoji:"🔥",
+    name:"4 Day Split",
+    tag:"AESTHETIC PHYSIQUE",
+    desc:"A balanced 4-day hypertrophy split built to maximize muscle growth, improve recovery and develop a proportional aesthetic physique efficiently.",
+    price:49,
+    features:[
+      "4-Day Structure",
+      "Hypertrophy Focus",
+      "Recovery Balanced",
+      "Strength Progression"
+    ],
+    gold:false
+  },
+
+  {
+    id:6,
+    emoji:"👑",
+    name:"Full Bundle Pack",
+    tag:"ULTIMATE TRANSFORMATION",
+    desc:"Get complete access to every premium FitVault guide, training system, supplement resource and exclusive bonus content in one powerful transformation bundle.",
+    price:149,
+    orig:245,
+    features:[
+      "All 5 Premium Guides",
+      "Exclusive Bonuses",
+      "Lifetime Access",
+      "Priority Support"
+    ],
+    gold:true
+  }
+];
+
+const pGrid = document.getElementById('product-grid');
+products.forEach((p, i) => {
+  const c = p.gold ? 'rgba(255,215,0,.3)' : 'rgba(0,200,255,.18)';
+  const barCol = p.gold ? 'linear-gradient(90deg,#ffd700,#ff8c00)' : 'linear-gradient(90deg,#00c8ff,#0055ff)';
+  const btnCol = p.gold ? 'linear-gradient(135deg,#ffd700,#ff8c00)' : undefined;
+  const priceCol = p.gold ? '#ffd700' : '#00c8ff';
+  const tagClass = p.gold ? 'tag gold' : 'tag';
+  const feats = p.features.map(f => `<span style="font-size:10px;padding:4px 10px;border-radius:9999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:#8899aa">✓ ${f}</span>`).join('');
+  const orig = p.orig ? `<div style="font-size:11px;color:#445566;text-decoration:line-through">₹${p.orig}</div>` : '';
+  pGrid.innerHTML += `
+    <div class="appear glass" style="border-radius:22px;padding:34px;position:relative;overflow:hidden;border:1px solid ${c};animation-delay:${i*70}ms">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:${barCol}"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+        <div style="font-size:50px;line-height:1">${p.emoji}</div>
+        <span class="${tagClass}">${p.tag}</span>
+      </div>
+      <h3 style="font-family:'Bebas Neue',cursive;font-size:24px;letter-spacing:1px;margin-bottom:11px;line-height:1.1">${p.name}</h3>
+      <p style="color:#6a7f90;font-size:13px;line-height:1.75;margin-bottom:18px">${p.desc}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px">${feats}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>${orig}<div style="font-family:'Bebas Neue',cursive;font-size:38px;color:${priceCol};letter-spacing:1px">₹${p.price}</div></div>
+        <button class="btn" onclick="buyWA('${p.name.replace(/'/g,"\\'")}',${p.price})" style="padding:11px 22px;border-radius:9999px;font-size:13px;${btnCol?'background:'+btnCol:''}">Buy on WhatsApp →</button>
+      </div>
+    </div>`;
+});
+
+// ── Science cards ──
+const science = [
+  {icon:"🧬",title:"Progressive Overload",desc:"Every program is built around the foundational principle that muscles grow only when consistently challenged.",prog:95},
+  {icon:"📊",title:"Macro Optimization",desc:"Nutrition plans use evidence-based macronutrient ratios calibrated to your body type and training goal.",prog:90},
+  {icon:"⏱️",title:"Volume & Frequency",desc:"Training volume and weekly frequency dialled to the sweet spot proven by muscle protein synthesis research.",prog:88},
+  {icon:"😴",title:"Recovery Science",desc:"Rest intervals and sleep protocols designed around peer-reviewed recovery and supercompensation research.",prog:85},
+  {icon:"🔬",title:"Supplement Research",desc:"Only supplements with strong clinical evidence are recommended with precise dosing and cycling protocols.",prog:92},
+  {icon:"🧠",title:"Mind-Muscle Connection",desc:"Evidence-based cueing techniques to maximize muscle fibre recruitment on every single rep.",prog:82},
+];
+const sg = document.getElementById('science-grid');
+science.forEach((s,i) => {
+  sg.innerHTML += `
+    <div class="appear glass" style="border-radius:18px;padding:28px;animation-delay:${i*75}ms">
+      <div style="font-size:36px;margin-bottom:14px">${s.icon}</div>
+      <h3 style="font-family:'Bebas Neue',cursive;font-size:21px;letter-spacing:1px;margin-bottom:9px">${s.title}</h3>
+      <p style="color:#6a7f90;font-size:13px;line-height:1.75;margin-bottom:18px">${s.desc}</p>
+      <div class="pbar-track"><div class="pbar-fill" style="width:${s.prog}%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:7px">
+        <span style="font-size:10px;color:#5a6a7a">Evidence strength</span>
+        <span style="font-size:10px;color:#00c8ff;font-weight:700">${s.prog}%</span>
+      </div>
+    </div>`;
+});
+
+// ── BMI ──
+function calcBMI() {
+  const h = parseInt(document.getElementById('bh').value) / 100;
+  const w = parseInt(document.getElementById('bw').value);
+  const bmi = (w / (h * h)).toFixed(1);
+  let cat, col;
+  if (bmi < 18.5) { cat = "Underweight"; col = "#60a5fa"; }
+  else if (bmi < 25) { cat = "Healthy Weight ✓"; col = "#34d399"; }
+  else if (bmi < 30) { cat = "Overweight"; col = "#fbbf24"; }
+  else { cat = "Obese"; col = "#f87171"; }
+  document.getElementById('bmi-num').textContent = bmi;
+  document.getElementById('bmi-cat').style.color = col;
+  document.getElementById('bmi-cat').textContent = cat;
+  document.getElementById('bmi-result').style.display = 'block';
+}
+
+// ── Calories ──
+let calGender = 'male';
+function setGender(g) {
+  calGender = g;
+  document.getElementById('tog-m').className = 'calc-tog' + (g==='male'?' on':'');
+  document.getElementById('tog-f').className = 'calc-tog' + (g==='female'?' on':'');
+}
+function calcCal() {
+  const h = parseInt(document.getElementById('ch').value);
+  const w = parseInt(document.getElementById('cw').value);
+  const a = parseInt(document.getElementById('ca').value);
+  const act = parseFloat(document.getElementById('act').value);
+  let bmr;
+  if (calGender === 'male') bmr = 88.362 + 13.397*w + 4.799*h - 5.677*a;
+  else bmr = 447.593 + 9.247*w + 3.098*h - 4.330*a;
+  const maint = Math.round(bmr * act);
+  document.getElementById('cal-num').textContent = maint.toLocaleString();
+  document.getElementById('cut-num').textContent = (maint-500).toLocaleString();
+  document.getElementById('bulk-num').textContent = (maint+300).toLocaleString();
+  document.getElementById('cal-result').style.display = 'block';
+}
+
+// ── Split ──
+const splits = {
+  2:{name:"Full Body Split",days:[
+    {day:"Day 1",focus:"Full Body A",ex:["Squats","Bench Press","Barbell Rows","OHP","Deadlift"]},
+    {day:"Day 2",focus:"Full Body B",ex:["Romanian DL","Incline Press","Pull-ups","Lunges","Cable Rows"]}]},
+  3:{name:"Push / Pull / Legs",days:[
+    {day:"Day 1",focus:"Push — Chest · Shoulders · Triceps",ex:["Bench Press","OHP","Lateral Raises","Tricep Dips"]},
+    {day:"Day 2",focus:"Pull — Back · Biceps",ex:["Deadlift","Pull-ups","Cable Rows","Barbell Curls"]},
+    {day:"Day 3",focus:"Legs — Quads · Hams · Glutes",ex:["Squats","Romanian DL","Leg Press","Calf Raises"]}]},
+  4:{name:"Upper / Lower Split",days:[
+    {day:"Day 1",focus:"Upper Body A",ex:["Bench Press","Rows","OHP","Pull-ups","Curls"]},
+    {day:"Day 2",focus:"Lower Body A",ex:["Squats","Romanian DL","Leg Press","Leg Curls"]},
+    {day:"Day 3",focus:"Upper Body B",ex:["Incline Press","Cable Rows","Lateral Raises","Tricep Extensions"]},
+    {day:"Day 4",focus:"Lower Body B",ex:["Deadlift","Bulgarian Split Squat","Leg Extensions","Calf Raises"]}]},
+  5:{name:"PPL + Full Body",days:[
+    {day:"Day 1",focus:"Push",ex:["Bench Press","OHP","Lateral Raises","Triceps"]},
+    {day:"Day 2",focus:"Pull",ex:["Deadlift","Pull-ups","Cable Rows","Biceps"]},
+    {day:"Day 3",focus:"Legs",ex:["Squats","Romanian DL","Leg Press","Calves"]},
+    {day:"Day 4",focus:"Push + Shoulders",ex:["Incline Press","Arnold Press","Flyes","Lateral Raises"]},
+    {day:"Day 5",focus:"Pull + Arms",ex:["Weighted Pull-ups","Rows","Hammer Curls","Skull Crushers"]}]},
+  6:{name:"PPL × 2 (Power Split)",days:[
+    {day:"Day 1",focus:"Push A",ex:["Bench Press","OHP","Tricep Dips"]},
+    {day:"Day 2",focus:"Pull A",ex:["Deadlift","Pull-ups","Barbell Rows"]},
+    {day:"Day 3",focus:"Legs A",ex:["Squats","Romanian DL","Leg Press"]},
+    {day:"Day 4",focus:"Push B",ex:["Incline Press","Lateral Raises","Cable Flyes"]},
+    {day:"Day 5",focus:"Pull B",ex:["Cable Rows","Face Pulls","Bicep Curls"]},
+    {day:"Day 6",focus:"Legs B",ex:["Bulgarian Split Squat","Hack Squat","Leg Curls"]}]},
+};
+let selDay = 4;
+function setDay(d) {
+  selDay = d;
+  [2,3,4,5,6].forEach(n => {
+    document.getElementById('d'+n).className = 'day-btn' + (n===d?' on':'');
+  });
+}
+function genSplit() {
+  const s = splits[selDay];
+  let html = `<div style="font-size:13px;font-weight:700;color:#00c8ff;margin-bottom:13px">${s.name}</div>`;
+  html += `<div style="max-height:300px;overflow-y:auto;padding-right:2px">`;
+  s.days.forEach(d => {
+    const exHtml = d.ex.map(e => `<span style="font-size:10px;padding:3px 9px;border-radius:6px;background:rgba(0,200,255,.07);color:#8899aa">${e}</span>`).join('');
+    html += `<div class="split-day">
+      <div style="display:flex;justify-content:space-between;margin-bottom:9px">
+        <span style="font-size:11px;color:#00c8ff;font-weight:700">${d.day}</span>
+        <span style="font-size:10px;color:#6a7f90;text-align:right;max-width:60%">${d.focus}</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${exHtml}</div>
+    </div>`;
+  });
+  html += '</div>';
+  document.getElementById('split-result').innerHTML = html;
+}
+
+// ── Scroll observer ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.appear').forEach(el => obs.observe(el));
+
+// ── Nav scroll glass ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').className = window.scrollY > 40 ? 'nav-glass' : '';
+}, { passive: true });
+
+// ── Hero appear ──
+setTimeout(() => {
+  document.querySelectorAll('#home .appear').forEach((el, i) => {
+    setTimeout(() => el.classList.add('in'), i * 140);
+  });
+}, 100);
+</script>
+</body>
+</html>
